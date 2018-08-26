@@ -75,7 +75,9 @@ export const SCRoot = styled.ScrollView`
   flex: 1;
   background-color: white;
 `;
-
+export const TextLink = styled.Text`
+  color: #1da1f2;
+`;
 const StretchedButtonText = styled.Text`
   color: white;
   font-size: 22px;

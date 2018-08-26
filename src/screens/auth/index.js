@@ -3,13 +3,15 @@ import GetStartedScreen from './GetStarted';
 import Signup1Screen from './Signup1';
 //terms and conditions
 import Signup2Screen from './Signup2';
+//privacy options
+import PrivacyOptionsScreen from './PrivacyOptions';
 //signup3 is password
 import Signup3Screen from './Signup3';
 import LoginScreen from './Login';
 import { createStackNavigator } from 'react-navigation';
 //slide from left transitions
 import { fadeIn } from 'react-navigation-transitions';
-
+import { CheckBox } from 'react-native';
 const Auth = createStackNavigator(
   {
     GetStarted: {
@@ -21,6 +23,9 @@ const Auth = createStackNavigator(
     Signup2: {
       screen: Signup2Screen,
     },
+    PrivacyOptions: {
+      screen: PrivacyOptionsScreen,
+    },
     Signup3: {
       screen: Signup3Screen,
     },
@@ -30,7 +35,7 @@ const Auth = createStackNavigator(
   },
   {
     //GetStarted is default
-    initialRouteName: 'GetStarted',
+    initialRouteName: 'Signup3',
     transitionConfig: () => fadeIn(),
   },
 );

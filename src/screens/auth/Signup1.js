@@ -157,7 +157,13 @@ class Signup1 extends Component {
               opacity: !this.state.name || !this.state.phoneOrEmail ? 0.6 : 1,
             }}
             disabled={!this.state.name || !this.state.phoneOrEmail}
-            onPress={() => this.props.navigation.navigate('Signup2')} //for now
+            onPress={() => {
+              this.props.navigation.navigate('Signup2', {
+                name: this.state.name,
+                phoneOrEmailValue: this.state.phoneOrEmail,
+                phoneOrEmail: this.state.currentlyActive,
+              });
+            }} //for now
           >
             Next
           </Button>
