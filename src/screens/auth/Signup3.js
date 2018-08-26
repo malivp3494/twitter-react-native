@@ -156,7 +156,8 @@ class Signup3 extends Component {
                 onChangeText={text => {
                   this.setState({
                     passConfirm: text,
-                    disableNext: !(this.state.pass === text),
+                    disableNext:
+                      !this.state.pass || !(this.state.pass === text),
                   });
                 }}
               />

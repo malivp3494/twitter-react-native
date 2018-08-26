@@ -27,7 +27,42 @@ export const SignupHeader = props => (
       <BackIcon size={32} style={{ flex: 1 }} />
     </T>
     <TwitterIcon size={32} style={{ position: 'absolute', left: '50%' }} />
-    <V style={{ flex: 1 }} />
+  </V>
+);
+
+export const LoginHeader = props => (
+  <V
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      position: 'absolute',
+      width: '100%',
+      paddingLeft: 20,
+      top: 20,
+    }}
+  >
+    <T
+      style={{
+        marginLeft: 'auto',
+      }}
+      onPress={() => props.onSignupPress()}
+    >
+      <Text
+        style={{
+          color: '#1da1df',
+          fontWeight: 'bold',
+          fontSize: 16,
+          paddingHorizontal: 20,
+        }}
+      >
+        Sign up
+      </Text>
+    </T>
+
+    <T onPress={() => props.onSignupPress()} style={{ marginRight: 14 }}>
+      <EntypoIcon name="dots-three-vertical" color="#1da1df" size={22} />
+    </T>
+    <TwitterIcon size={32} style={{ position: 'absolute', left: '50%' }} />
   </V>
 );
 

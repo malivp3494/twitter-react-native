@@ -35,7 +35,7 @@ const Auth = createStackNavigator(
   },
   {
     //GetStarted is default
-    initialRouteName: 'Signup3',
+    initialRouteName: 'Login',
     transitionConfig: () => fadeIn(),
   },
 );
