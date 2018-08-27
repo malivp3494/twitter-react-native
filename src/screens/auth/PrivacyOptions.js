@@ -24,7 +24,7 @@ class PrivacyOptions extends Component {
     super(props);
     this.state = {
       allowFindByPhone: true,
-      allowFindByMail: true,
+      allowFindByEmail: true,
     };
     this.handleBackPress = this.handleBackPress.bind(this);
   }

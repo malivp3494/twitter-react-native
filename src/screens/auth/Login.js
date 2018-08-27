@@ -11,7 +11,7 @@ import {
   BackIcon,
   BigText,
 } from '../../components';
-
+import { Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
 class Login extends Component {
@@ -67,7 +67,7 @@ class Login extends Component {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          paddingTop: 80,
+          paddingTop: 60,
         }}
       >
         <LoginHeader
@@ -162,15 +162,27 @@ class Login extends Component {
               />
             </T>
           </V>
+          <Text
+            style={{
+              textDecorationLine: 'underline',
+              color: 'gray',
+            }}
+            onPress={() =>
+              Linking.openURL(
+                'https://twitter.com/account/begin_password_reset',
+              )
+            }
+          >
+            Forgot password?
+          </Text>
         </V>
         <V
           style={{
             flexDirection: 'row',
             alignItems: 'flex-start',
-            paddingVertical: '4%',
+            paddingVertical: 10,
             width: '90%',
             justifyContent: 'center',
-            bottom: 10,
             borderTopWidth: 1,
             borderTopColor: '#ededed',
           }}
