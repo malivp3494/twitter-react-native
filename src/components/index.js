@@ -12,6 +12,7 @@ export const BackIcon = props => (
 );
 
 export const V = styled.View``;
+export const TN = styled.TouchableNativeFeedback``;
 
 export const SignupHeader = props => (
   <V

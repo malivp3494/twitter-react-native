@@ -197,7 +197,7 @@ class Signup3 extends Component {
             }}
             disabled={this.state.disableNext}
             onPress={() => {
-              this.props.navigation.navigate('Signup2', {
+              this.props.navigation.navigate('MainApp', {
                 password: this.state.passConfirm,
               });
             }} //for now
