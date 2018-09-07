@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { gray, gray2 } from './colors';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import LineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+export const I = styled.Image``;
 export const TwitterIcon = props => (
   <EntypoIcon name="twitter" color="#1da1f2" {...props} />
 );
@@ -63,7 +67,37 @@ export const LoginHeader = props => (
     <T onPress={() => props.onSignupPress()} style={{ marginRight: 14 }}>
       <EntypoIcon name="dots-three-vertical" color="#1da1df" size={22} />
     </T>
-    <TwitterIcon size={32} style={{ position: 'absolute', left: '50%' }} />
+  </V>
+);
+
+export const HomeHeader = props => (
+  <V
+    style={{
+      flexDirection: 'row',
+      alignItems: 'center',
+      elevation: 3,
+      minHeight: 60,
+      maxHeight: 60,
+      width: '100%',
+      paddingLeft: 20,
+    }}
+  >
+    <T onPress={() => props.onBackPress()}>
+      {
+        //<Image style={{ width:32, height:32, borderRadius:32 }} source={{uri:user.avatar}} />}
+      }
+      <EntypoIcon name="menu" size={32} color={'#1da1df'} />
+    </T>
+    <Text
+      style={{
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: 'black',
+        marginLeft: 20,
+      }}
+    >
+      {props.title}
+    </Text>
   </V>
 );
 
@@ -143,5 +177,73 @@ export const StretchedButton = props => {
     <StretchedButtonContainer {...props}>
       <StretchedButtonText>{props.children}</StretchedButtonText>
     </StretchedButtonContainer>
+  );
+};
+
+const HV = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const Tweet = props => {
+  // alert(props.data.avatar);
+  return (
+    <HV
+      style={{
+        paddingVertical: 10,
+        borderBottomWidth: 0.4,
+        borderBottomColor: gray,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+      }}
+    >
+      <I
+        source={{ uri: props.data.avatar }}
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: 50,
+        }}
+      />
+      <V
+        style={{ flexDirection: 'column', width: '80%', paddingHorizontal: 10 }}
+      >
+        <HV>
+          <Text style={{ color: 'black', fontWeight: 'bold' }}>
+            {props.data.name}{' '}
+          </Text>
+          <Text style={{ marginLeft: 3 }}>{props.data.username}</Text>
+        </HV>
+        <Text
+          style={{
+            textAlign: 'left',
+            marginVertical: 16,
+            color: 'black',
+            flexWrap: 'wrap',
+          }}
+        >
+          {props.data.text}
+        </Text>
+        <HV
+          style={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <HV>
+            <LineIcon name="bubble" color={gray} size={20} />
+            <Text style={{ marginLeft: 4 }}>{props.data.replies}</Text>
+          </HV>
+          <HV>
+            <MCIcon name="twitter-retweet" color={gray2} size={28} />
+            <Text style={{ marginLeft: 4 }}>{props.data.retweets}</Text>
+          </HV>
+          <HV>
+            <MCIcon name="heart-outline" color={gray2} size={24} />
+            <Text style={{ marginLeft: 4 }}>{props.data.likes}</Text>
+          </HV>
+        </HV>
+      </V>
+    </HV>
   );
 };
