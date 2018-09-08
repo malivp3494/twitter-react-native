@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-import { gray, gray2 } from './colors';
+import { gray, gray2, blue, green, pink } from './colors';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import LineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { touch } from './constants';
 
 export const I = styled.Image``;
 export const TwitterIcon = props => (
@@ -76,6 +77,7 @@ export const HomeHeader = props => (
       flexDirection: 'row',
       alignItems: 'center',
       elevation: 3,
+      backgroundColor: 'white',
       minHeight: 60,
       maxHeight: 60,
       width: '100%',
@@ -185,65 +187,189 @@ const HV = styled.View`
   align-items: center;
 `;
 
-export const Tweet = props => {
-  // alert(props.data.avatar);
+export const FloatingButton = props => {
   return (
-    <HV
-      style={{
-        paddingVertical: 10,
-        borderBottomWidth: 0.4,
-        borderBottomColor: gray,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-      }}
+    <TN
+      useForeground={true}
+      hitSlop={touch}
+      onPress={() => props.handlePress()}
     >
-      <I
-        source={{ uri: props.data.avatar }}
-        style={{
-          width: 50,
-          height: 50,
-          borderRadius: 50,
-        }}
-      />
       <V
-        style={{ flexDirection: 'column', width: '80%', paddingHorizontal: 10 }}
+        style={{
+          backgroundColor: blue,
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'absolute',
+          width: 56,
+          height: 56,
+          borderRadius: 56,
+          right: 14,
+          bottom: 14,
+          elevation: 2,
+          zIndex: 4,
+        }}
       >
-        <HV>
-          <Text style={{ color: 'black', fontWeight: 'bold' }}>
-            {props.data.name}{' '}
-          </Text>
-          <Text style={{ marginLeft: 3 }}>{props.data.username}</Text>
-        </HV>
-        <Text
-          style={{
-            textAlign: 'left',
-            marginVertical: 16,
-            color: 'black',
-            flexWrap: 'wrap',
-          }}
-        >
-          {props.data.text}
-        </Text>
-        <HV
-          style={{
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <HV>
-            <LineIcon name="bubble" color={gray} size={20} />
-            <Text style={{ marginLeft: 4 }}>{props.data.replies}</Text>
-          </HV>
-          <HV>
-            <MCIcon name="twitter-retweet" color={gray2} size={28} />
-            <Text style={{ marginLeft: 4 }}>{props.data.retweets}</Text>
-          </HV>
-          <HV>
-            <MCIcon name="heart-outline" color={gray2} size={24} />
-            <Text style={{ marginLeft: 4 }}>{props.data.likes}</Text>
-          </HV>
-        </HV>
+        <MCIcon name="feather" color="white" size={28} />
       </V>
-    </HV>
+    </TN>
   );
 };
+
+//christ Tweet is stateful
+export class Tweet extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      likeColor: gray2,
+      retweetColor: gray2,
+    };
+  }
+
+  render() {
+    const { props } = this;
+    return (
+      <HV
+        onPress={() => props.handlePress(props.data.id)}
+        style={{
+          paddingVertical: 10,
+          borderBottomWidth: 0.4,
+          borderBottomColor: gray,
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        }}
+      >
+        <I
+          source={{ uri: props.data.avatar }}
+          onPress={() => props.handleUsernamePress(props.data.username)}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 50,
+          }}
+        />
+        <V
+          style={{
+            flexDirection: 'column',
+            width: '80%',
+            marginLeft: 10,
+          }}
+        >
+          {props.data.type === 'retweet' && (
+            <Text style={{ color: gray, fontSize: 12 }}>
+              <MCIcon name="twitter-retweet" color={gray} size={14} />
+              <Text style={{ color: gray, marginLeft: 20 }}>
+                {props.data.name}
+              </Text>{' '}
+              retweeted this
+            </Text>
+          )}
+          <HV>
+            <Text style={{ color: 'black', fontWeight: 'bold' }}>
+              {props.data.name}{' '}
+            </Text>
+            <Text style={{ marginLeft: 3 }}>{props.data.username}</Text>
+            <Text style={{ marginLeft: 3 }}>
+              {props.data.createdAt.slice(5)}
+            </Text>
+            <T
+              hitSlop={touch}
+              onPress={() => props.handleOptionsPress(props.data.id)}
+            >
+              <MCIcon
+                name="chevron-down"
+                color={gray}
+                size={20}
+                style={{ marginLeft: 'auto' }}
+              />
+            </T>
+          </HV>
+          {props.data.type === 'reply' && (
+            <Text>
+              Replying to{' '}
+              <Text
+                style={{ color: blue }}
+                onPress={() => props.handleUsernamePress(props.data.username)}
+              >
+                {props.data.username}
+              </Text>
+            </Text>
+          )}
+          <Text
+            style={{
+              textAlign: 'left',
+              marginVertical: 16,
+              color: 'black',
+              flexWrap: 'wrap',
+            }}
+          >
+            {props.data.text}
+          </Text>
+          <HV
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '96%',
+            }}
+          >
+            <T
+              hitSlop={touch}
+              onPress={() => props.handleReplyPress(props.data.id)}
+            >
+              <HV>
+                <LineIcon name="bubble" color={gray} size={18} />
+                <Text style={{ marginLeft: 4 }}>{props.data.replies}</Text>
+              </HV>
+            </T>
+            <T
+              hitSlop={touch}
+              onPress={() => {
+                this.setState({
+                  retweetColor:
+                    this.state.retweetColor === gray2 ? green : gray2,
+                });
+                props.handleRetweetPress(props.data.id);
+              }}
+            >
+              <HV>
+                <MCIcon
+                  name="twitter-retweet"
+                  color={this.state.retweetColor}
+                  size={24}
+                />
+                <Text style={{ marginLeft: 4, color: this.state.retweetColor }}>
+                  {props.data.retweets}
+                </Text>
+              </HV>
+            </T>
+            <T
+              hitSlop={touch}
+              onPress={() => {
+                this.setState({
+                  likeColor: this.state.likeColor === gray2 ? pink : gray2,
+                });
+                props.handleLikePress(props.data.id);
+              }}
+            >
+              <HV>
+                <MCIcon
+                  name={
+                    this.state.likeColor === gray2 ? 'heart-outline' : 'heart'
+                  }
+                  color={this.state.likeColor}
+                  size={18}
+                />
+                <Text style={{ marginLeft: 4, color: this.state.likeColor }}>
+                  {props.data.likes}
+                </Text>
+              </HV>
+            </T>
+            <T hitslop={touch} onPress={() => props.handleSharePress()}>
+              <FeatherIcon name="share-2" color={gray2} size={18} />
+            </T>
+          </HV>
+        </V>
+      </HV>
+    );
+  }
+}

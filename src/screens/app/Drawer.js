@@ -62,14 +62,11 @@ const Header = ({ user }) => (
       >
         <Text style={{ fontWeight: 'bold' }}>{user.following}</Text> Following
       </Text>
-      <Text style={{ color: 'gray' }}>
-        <Text
-          style={{ fontWeight: 'bold' }}
-          onPress={() => alert('navigate to list of followers')}
-        >
-          {user.followers}
-        </Text>{' '}
-        Followers
+      <Text
+        style={{ color: 'gray' }}
+        onPress={() => alert('navigate to list of followers')}
+      >
+        <Text style={{ fontWeight: 'bold' }}>{user.followers}</Text> Followers
       </Text>
     </V>
   </Root>

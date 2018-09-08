@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Root, Tweet, HomeHeader } from '../../../components';
+import {
+  FloatingButton as CreateTweetButton,
+  Root,
+  Tweet,
+  HomeHeader,
+} from '../../../components';
 import { gray, blue } from '../../../components/colors';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import faker from 'faker';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 const TweetTypes = ['reply', 'retweet', 'normal'];
 
 // yeah generating here cause, no time for graphql yet.. fuck Im lazy
+//also, the replace the menuIcon with avatar, once the user logs in, so,
+//store user info in redux store? apollo-link-state?
 const createTweets = async n => {
   return await Array.from({ length: n }).map(each => {
     return {
@@ -17,27 +25,46 @@ const createTweets = async n => {
       username: '@' + faker.internet.userName(),
       type: TweetTypes.random(),
       text: faker.lorem.sentences(6).substring(0, [85, 279, 29, 234].random()),
-      replies: [100, 1000, 123004, 23404, 23, 2, 23].random(),
-      likes: [100, 1000, 123004, 23404, 23, 2, 23].random(),
-      retweets: [100, 1000, 123004, 23404, 23, 2, 23].random(),
-      createdAt: faker.date.recent(),
+      replies: [100, 1000, 123004, 23404, 23, 2, 23]
+        .random()
+        .toString()
+        .convertNumber(),
+      likes: [100, 1000, 123004, 23404, 23, 2, 23]
+        .random()
+        .toString()
+        .convertNumber(),
+      retweets: [100, 1000, 123004, 23404, 23, 2, 23]
+        .random()
+        .toString()
+        .convertNumber(),
+      createdAt: distanceInWordsToNow(faker.date.recent()),
     };
   });
 };
 
-class Lists extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: null,
       offset: 0,
+      loading: false,
       maxOffset: 60,
       currentY: 0,
     };
+    this.handleUsernamePress = this.handleUsernamePress.bind(this);
+    this.handleOnRefresh = this.handleOnRefresh.bind(this);
+    this.handleLikePress = this.handleLikePress.bind(this);
+    this.handlePress = this.handlePress.bind(this);
+    this.handleReplyPress = this.handleReplyPress.bind(this);
+    this.handleRetweetPress = this.handleRetweetPress.bind(this);
+    this.handleSharePress = this.handleSharePress.bind(this);
+    this.handleCreateNewTweet = this.handleCreateNewTweet.bind(this);
+    this.handleOptionsPress = this.handleOptionsPress.bind(this);
   }
 
   async componentDidMount() {
-    let data = await createTweets(5);
+    let data = await createTweets(24);
     this.setState({ data });
   }
 
@@ -58,6 +85,10 @@ class Lists extends Component {
     },
   };
 
+  handleCreateNewTweet() {
+    //navigate to create new tweet
+  }
+
   handleScroll = e => {
     let y = e.nativeEvent.contentOffset.y;
     //alert(y);
@@ -67,6 +98,46 @@ class Lists extends Component {
       this.setState({ offest: 0 });
     }
   };
+
+  handleUsernamePress(username) {
+    //navigate to Username's profile screen
+    this.props.navigation.navigate('Profile', { username: username });
+  }
+
+  handleOnRefresh() {
+    //fetch new tweets, apollo!
+    this.setState({ loading: true });
+    setTimeout(() => this.setState({ loading: false }), 2000);
+  }
+
+  handleLikePress(id) {
+    //mutate like
+    //alert(id + ' liked');
+  }
+
+  handleRetweetPress(id) {
+    //alert(id + ' retweeted');
+    //mutate retweet
+  }
+
+  handleReplyPress(id) {
+    //navigate to
+    // create new tweet with replying to.. usernames
+  }
+
+  handlePress(id) {
+    //navigate to single tweet thread
+    this.props.navigation.navigate('TweetThread', { tweetId: id });
+  }
+
+  handleSharePress(id) {
+    //share, copy to clipboard etc?
+  }
+
+  handleOptionsPress(id) {
+    //open modal?
+  }
+
   render() {
     //this.state.data && alert(this.state.data[0].avatar);
     return (
@@ -83,12 +154,31 @@ class Lists extends Component {
         <FlatList
           style={{ flex: 1 }}
           data={this.state.data}
+          refreshControl={
+            <RefreshControl
+              colors={[blue]}
+              onRefresh={this.handleOnRefresh}
+              refreshing={this.state.loading}
+            />
+          }
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <Tweet data={item} />}
+          renderItem={({ item }) => (
+            <Tweet
+              data={item}
+              handleUsernamePress={this.handleUsernamePress}
+              handlePress={this.handlePress}
+              handleReplyPress={this.handleReplyPress}
+              handleOptionsPress={this.handleOptionsPress}
+              handleSharePress={this.handleSharePress}
+              handleRetweetPress={this.handleRetweetPress}
+              handleLikePress={this.handleLikePress}
+            />
+          )}
         />
+        <CreateTweetButton handlePress={this.handleCreateNewTweet} />
       </Root>
     );
   }
 }
 
-export default Lists;
+export default Home;

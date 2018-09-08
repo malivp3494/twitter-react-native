@@ -10,6 +10,7 @@ import HelpCenterScreen from './HelpCenter';
 import ProfileScreen from './Profile';
 import Drawer from './Drawer';
 import React from 'react';
+import SingleThreadScreen from './SingleThread';
 
 const DrawerStack = createSwitchNavigator(
   {
@@ -18,6 +19,7 @@ const DrawerStack = createSwitchNavigator(
     Bookmarks: BookmarksScreen,
     Moments: MomentsScreen,
     TwitterAds: TwitterAdsScreen,
+    SingleThread: SingleThreadScreen,
     Settings: SettingsScreen,
     HelpCenter: HelpCenterScreen,
   },

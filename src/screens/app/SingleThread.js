@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Root, Text } from '../../components';
 
-class Profile extends Component {
+class SingleThread extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ class Profile extends Component {
     return (
       <Root>
         <Text>
-          {this.state.username}
+          {this.state.tweetId}
           's Profile
         </Text>
       </Root>
@@ -24,4 +24,4 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+export default SingleThread;
