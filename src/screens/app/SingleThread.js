@@ -5,19 +5,21 @@ class SingleThread extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
+      tweetId: null,
     };
   }
+
   async componentDidMount() {
-    const username = await this.props.navigation.getParam('username');
-    this.setState({ username });
+    const tweetId = await this.props.navigation.getParam('tweetId');
+    this.setState({ tweetId });
   }
+
   render() {
     return (
       <Root>
         <Text>
           {this.state.tweetId}
-          's Profile
+          loading this tweet
         </Text>
       </Root>
     );

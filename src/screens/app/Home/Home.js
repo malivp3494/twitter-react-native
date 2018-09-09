@@ -4,11 +4,13 @@ import {
   Root,
   Tweet,
   HomeHeader,
+  Menu,
+  MenuItem,
 } from '../../../components';
 import { gray, blue } from '../../../components/colors';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import faker from 'faker';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, Modal } from 'react-native';
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 
 const TweetTypes = ['reply', 'retweet', 'normal'];
@@ -43,31 +45,6 @@ const createTweets = async n => {
 };
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      offset: 0,
-      loading: false,
-      maxOffset: 60,
-      currentY: 0,
-    };
-    this.handleUsernamePress = this.handleUsernamePress.bind(this);
-    this.handleOnRefresh = this.handleOnRefresh.bind(this);
-    this.handleLikePress = this.handleLikePress.bind(this);
-    this.handlePress = this.handlePress.bind(this);
-    this.handleReplyPress = this.handleReplyPress.bind(this);
-    this.handleRetweetPress = this.handleRetweetPress.bind(this);
-    this.handleSharePress = this.handleSharePress.bind(this);
-    this.handleCreateNewTweet = this.handleCreateNewTweet.bind(this);
-    this.handleOptionsPress = this.handleOptionsPress.bind(this);
-  }
-
-  async componentDidMount() {
-    let data = await createTweets(24);
-    this.setState({ data });
-  }
-
   static navigationOptions = {
     tabBarIcon: props => (
       <FAIcon name="home" size={26} color={props.focused ? blue : gray} />
@@ -84,6 +61,31 @@ class Home extends Component {
       activeBackgroundColor: 'white',
     },
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+      offset: 0,
+      loading: false,
+      maxOffset: 60,
+      currentY: 0,
+      showModal: false,
+    };
+    this.handleUsernamePress = this.handleUsernamePress.bind(this);
+    this.handleOnRefresh = this.handleOnRefresh.bind(this);
+    this.handleLikePress = this.handleLikePress.bind(this);
+    this.handlePress = this.handlePress.bind(this);
+    this.handleReplyPress = this.handleReplyPress.bind(this);
+    this.handleRetweetPress = this.handleRetweetPress.bind(this);
+    this.handleSharePress = this.handleSharePress.bind(this);
+    this.handleCreateNewTweet = this.handleCreateNewTweet.bind(this);
+  }
+
+  async componentDidMount() {
+    let data = await createTweets(24);
+    this.setState({ data });
+  }
 
   handleCreateNewTweet() {
     //navigate to create new tweet
@@ -123,19 +125,16 @@ class Home extends Component {
   handleReplyPress(id) {
     //navigate to
     // create new tweet with replying to.. usernames
+    this.props.navigation.navigate('CreateTweet', { parentTweetId: id });
   }
 
   handlePress(id) {
     //navigate to single tweet thread
-    this.props.navigation.navigate('TweetThread', { tweetId: id });
+    this.props.navigation.navigate('SingleThread', { tweetId: id });
   }
 
   handleSharePress(id) {
     //share, copy to clipboard etc?
-  }
-
-  handleOptionsPress(id) {
-    //open modal?
   }
 
   render() {
@@ -168,7 +167,6 @@ class Home extends Component {
               handleUsernamePress={this.handleUsernamePress}
               handlePress={this.handlePress}
               handleReplyPress={this.handleReplyPress}
-              handleOptionsPress={this.handleOptionsPress}
               handleSharePress={this.handleSharePress}
               handleRetweetPress={this.handleRetweetPress}
               handleLikePress={this.handleLikePress}

@@ -7,6 +7,7 @@ import LineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { touch } from './constants';
 
+const M = styled.Modal``;
 export const I = styled.Image``;
 export const TwitterIcon = props => (
   <EntypoIcon name="twitter" color="#1da1f2" {...props} />
@@ -187,6 +188,33 @@ const HV = styled.View`
   align-items: center;
 `;
 
+export const Menu = styled.ScrollView`
+  padding-left: 20px;
+  padding-vertical: 5px;
+`;
+
+export const MenuItem = props => (
+  <TN onPress={props.onPress}>
+    <V
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 12,
+        width: 300,
+        justifyContent: 'flex-start',
+      }}
+    >
+      <MCIcon
+        name={props.icon}
+        size={32}
+        color={gray}
+        style={{ marginRight: 20 }}
+      />
+      <Text>{props.name}</Text>
+    </V>
+  </TN>
+);
+
 export const FloatingButton = props => {
   return (
     <TN
@@ -223,7 +251,16 @@ export class Tweet extends Component {
     this.state = {
       likeColor: gray2,
       retweetColor: gray2,
+      showModal: false,
     };
+    this.handleOptionsPress = this.handleOptionsPress.bind(this);
+    this.onModalClose = this.onModalClose.bind(this);
+  }
+  onModalClose() {}
+
+  handleOptionsPress(id) {
+    //open modal?
+    this.setState({ showModal: true });
   }
 
   render() {
@@ -274,7 +311,7 @@ export class Tweet extends Component {
             </Text>
             <T
               hitSlop={touch}
-              onPress={() => props.handleOptionsPress(props.data.id)}
+              onPress={() => this.handleOptionsPress(props.data.id)}
             >
               <MCIcon
                 name="chevron-down"
@@ -369,6 +406,22 @@ export class Tweet extends Component {
             </T>
           </HV>
         </V>
+        <M
+          animationType="slide"
+          onRequestClose={this.onModalClose}
+          transparent={false}
+          visible={this.state.showModal}
+        >
+          <Menu>
+            <MenuItem>Add Tweet To Moment</MenuItem>
+            <MenuItem>Copy link to Tweet</MenuItem>
+            <MenuItem>I don't like this Tweet</MenuItem>
+            <MenuItem>Follow {props.data.username}</MenuItem>
+            <MenuItem>Mute {props.data.username}</MenuItem>
+            <MenuItem>Block {props.data.username}</MenuItem>
+            <MenuItem>Report Tweet</MenuItem>
+          </Menu>
+        </M>
       </HV>
     );
   }

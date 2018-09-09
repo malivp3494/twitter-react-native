@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { gray, blue } from '../../components/colors';
-import { V, Root, TN } from '../../components';
+import { V, Root, TN, Menu, MenuItem } from '../../components';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import faker from 'faker';
 import { Image } from 'react-native';
@@ -11,7 +11,7 @@ import { Image } from 'react-native';
 const fakeUserData = {
   name: '1up3down',
   username: 'malivp3494'[0] === '@' ? 'malivp3494' : '@malivp3494',
-  avatar: 'https://api.adorable.io/avatars/120/sss@adorable.io.png',
+  avatar: faker.internet.avatar(),
   following: 144,
   followers: 29,
 };
@@ -70,33 +70,6 @@ const Header = ({ user }) => (
       </Text>
     </V>
   </Root>
-);
-
-const Menu = styled.ScrollView`
-  padding-left: 20px;
-  padding-vertical: 5px;
-`;
-
-const MenuItem = props => (
-  <TN onPress={props.onPress}>
-    <V
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 12,
-        width: 300,
-        justifyContent: 'flex-start',
-      }}
-    >
-      <Icon
-        name={props.icon}
-        size={32}
-        color={gray}
-        style={{ marginRight: 20 }}
-      />
-      <Text>{props.name}</Text>
-    </V>
-  </TN>
 );
 
 const Footer = () => (

@@ -11,6 +11,7 @@ import ProfileScreen from './Profile';
 import Drawer from './Drawer';
 import React from 'react';
 import SingleThreadScreen from './SingleThread';
+import CreateTweetScreen from './CreateTweet';
 
 const DrawerStack = createSwitchNavigator(
   {
@@ -22,6 +23,7 @@ const DrawerStack = createSwitchNavigator(
     SingleThread: SingleThreadScreen,
     Settings: SettingsScreen,
     HelpCenter: HelpCenterScreen,
+    CreateTweet: CreateTweetScreen,
   },
   {
     transitionConfig: () => fadeIn(),
